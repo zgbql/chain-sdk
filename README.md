@@ -1,2 +1,2 @@
-# verax-sdk
-veraxchain sdk
+# chain-sdk
+chain sdk
