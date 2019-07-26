@@ -91,12 +91,12 @@ public class FabricConfig {
                     sampleOrg.addOrdererLocation(nl[0], grpcTLSify(nl[1]));
                 }
 
-                String eventHubNames = sdkProperties.getProperty(INTEGRATION_ORG + orgName + ".eventhub_locations");
-                ps = eventHubNames.split("[ \t]*,[ \t]*");
-                for (String peer : ps) {
-                    String[] nl = peer.split("[ \t]*@[ \t]*");
-                    sampleOrg.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
-                }
+//                String eventHubNames = sdkProperties.getProperty(INTEGRATION_ORG + orgName + ".eventhub_locations");
+//                ps = eventHubNames.split("[ \t]*,[ \t]*");
+//                for (String peer : ps) {
+//                    String[] nl = peer.split("[ \t]*@[ \t]*");
+//                    sampleOrg.addEventHubLocation(nl[0], grpcTLSify(nl[1]));
+//                }
 //                sampleOrg.setCALocation(sdkProperties.getProperty((INTEGRATIONTESTS_ORG + org.getKey() + ".ca_location")));
             }
         } catch (IOException e) {
