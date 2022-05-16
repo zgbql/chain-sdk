@@ -1,6 +1,6 @@
-package com.kbanquan.chain.sdk.utils;
+package com.zbl.chain.sdk.utils;
 
-import com.kbanquan.chain.sdk.FabricUser;
+import com.zbl.chain.sdk.FabricUser;
 import org.apache.commons.io.IOUtils;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -31,13 +31,13 @@ public class ProviderUserUtil {
 			return sampleUser;
 	}
 
-	
+
 
 	static PrivateKey getPrivateKeyFromBytes(byte[] data)
 			throws IOException, NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
 		final Reader pemReader = new StringReader(new String(data));
 		final PrivateKeyInfo pemPair;
-		
+
 		try (PEMParser pemParser = new PEMParser(pemReader)) {
 			pemPair = (PrivateKeyInfo) pemParser.readObject();
 		}

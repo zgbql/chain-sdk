@@ -1,9 +1,9 @@
-package com.kbanquan.chain.sdk;
+package com.zbl.chain.sdk;
 
 
-import com.kbanquan.chain.sdk.exceptions.ServerException;
-import com.kbanquan.chain.sdk.pojos.payload.CreateTransPayload;
-import com.kbanquan.chain.sdk.utils.FabricUtils;
+import com.zbl.chain.sdk.exceptions.ServerException;
+import com.zbl.chain.sdk.pojos.payload.CreateTransPayload;
+import com.zbl.chain.sdk.utils.FabricUtils;
 import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.exception.CryptoException;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -16,7 +16,6 @@ public class FabricClient {
 
   private static final FabricConfig config = FabricConfig.getInstance();
 
-  private ChaincodeID chaincodeID;
 
   private String channelID ;
 
@@ -59,20 +58,6 @@ public class FabricClient {
     this.channel = channel;
   }
 
-  public ChaincodeID getChaincodeID(){
-    if(null == chaincodeID){
-      this.chaincodeID = ChaincodeID.newBuilder().setName(chaincodeName).setVersion(version).build();
-    }
-    return chaincodeID;
-  }
-
-  public void setChaincodeID(ChaincodeID chaincodeID){
-    this.chaincodeID = chaincodeID;
-  }
-
-  public String getChannelID(){
-    return channelID;
-  }
 
   public void setChannelID(String channelID){
     this.channelID = channelID;
@@ -121,8 +106,7 @@ public class FabricClient {
     Collection<ProposalResponse> successful = new LinkedList<>();
     Collection<ProposalResponse> transactionPropResp = null;
 
-      transactionPropResp = FabricUtils.sendProposalToPeers(getChannel(), getHfClient(),
-        getChaincodeID(), "put", new String[]{createTransPayload.getBusinessId(),createTransPayload.getHash()}, config.getProposalWaitTime());
+      transactionPropResp = FabricUtils.sendProposalToPeers(getChannel(), getHfClient(),getChaincodeName(),"invoke", new String[]{"put",createTransPayload.getBusinessId(),createTransPayload.getHash()}, config.getProposalWaitTime());
 
     for (ProposalResponse response : transactionPropResp) {
       if (response.getStatus() == ProposalResponse.Status.SUCCESS) {
@@ -148,7 +132,7 @@ public class FabricClient {
   }
 
    /**
-   * ���ͽ��׵�orderer
+   * 发送交易到orderer
    */
   protected String sendTransactionToOrderer(Channel channel, Collection<ProposalResponse> successful)
     throws Exception{

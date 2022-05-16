@@ -1,4 +1,4 @@
-package com.kbanquan.chain.sdk;
+package com.zbl.chain.sdk;
 
 import org.hyperledger.fabric.sdk.Peer;
 import org.hyperledger.fabric.sdk.User;
@@ -6,7 +6,7 @@ import org.hyperledger.fabric.sdk.User;
 import java.util.*;
 
 public class FabricOrg {
-	
+
     private String name;
     private String mspid;
     private Map<String, User> userMap = new HashMap<>();
@@ -14,7 +14,7 @@ public class FabricOrg {
     private Map<String, String> ordererLocations = new HashMap<>();
     private Map<String, String> eventHubLocations = new HashMap<>();
     private Set<Peer> peers = new HashSet<>();
-    
+
     private FabricUser admin;
     private FabricUser peerAdmin;
     private String domainName;

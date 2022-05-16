@@ -1,4 +1,4 @@
-package com.kbanquan.chain.sdk;
+package com.zbl.chain.sdk;
 
 import org.hyperledger.fabric.sdk.Enrollment;
 import org.hyperledger.fabric.sdk.User;
@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 public class FabricUser implements User, Serializable {
-    
+
 	private static final long serialVersionUID = 8077132186383604355L;
 
     private String name;
@@ -17,13 +17,13 @@ public class FabricUser implements User, Serializable {
     private String organization;
     private Enrollment enrollment = null; //need access in test env.
     private String mspId;
-    
+
     public FabricUser() {}
-    
+
     public FabricUser(String name) {
         this.name = name;
     }
-    
+
     public FabricUser(String name, String org) {
         this.name = name;
         this.organization = org;
