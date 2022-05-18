@@ -15,6 +15,7 @@ import java.util.concurrent.TimeoutException;
 
 import static java.lang.String.format;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hyperledger.fabric.sdk.Channel.PeerOptions.createPeerOptions;
 
 public class FabricUtils {
 
@@ -133,7 +134,7 @@ public class FabricUtils {
             ProposalException {
         Collection<Peer> peers = getPeers(org, client, config);
         for (Peer peer : peers) {
-            channel.addPeer(peer);
+            channel.addPeer(peer, createPeerOptions().setPeerRoles(EnumSet.of(Peer.PeerRole.SERVICE_DISCOVERY, Peer.PeerRole.LEDGER_QUERY, Peer.PeerRole.EVENT_SOURCE, Peer.PeerRole.CHAINCODE_QUERY)));
             org.addPeer(peer);
         }
     }
@@ -301,7 +302,25 @@ public class FabricUtils {
         transactionProposalRequest.setProposalWaitTime(proposalWaitTime);
         transactionProposalRequest.setUserContext(client.getUserContext());
         transactionProposalRequest.setInit(false);
-        return channel.sendTransactionProposal(transactionProposalRequest, channel.getPeers());
+        Channel.DiscoveryOptions discoveryOptions = Channel.DiscoveryOptions.createDiscoveryOptions();
+        discoveryOptions.setEndorsementSelector(ServiceDiscovery.EndorsementSelector.ENDORSEMENT_SELECTION_RANDOM);
+        discoveryOptions.setForceDiscovery(false);
+        discoveryOptions.setInspectResults(true);
+        Collection<ProposalResponse> transactionPropResp = null;
+        try {
+            transactionPropResp = channel.sendTransactionProposalToEndorsers
+                    (transactionProposalRequest, discoveryOptions);
+        } catch (ProposalException e) {
+            System.out.printf("invokeTransactionSync fail,ProposalException:{}", e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (ServiceDiscoveryException e) {
+            System.out.printf("ServiceDiscoveryException fail:{}", e.getLocalizedMessage());
+            e.printStackTrace();
+        } catch (InvalidArgumentException e) {
+            System.out.printf("InvalidArgumentException fail:{}", e.getLocalizedMessage());
+            e.printStackTrace();
+        }
+        return transactionPropResp;
     }
 
 

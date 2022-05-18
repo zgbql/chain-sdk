@@ -8,11 +8,20 @@ import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.exception.CryptoException;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
-public class FabricClient {
+import java.io.IOException;
+
+import java.security.InvalidKeyException;
+import java.security.cert.CertificateException;
+
+
+public class ZblClient {
 
   private static final FabricConfig config = FabricConfig.getInstance();
 
@@ -31,7 +40,8 @@ public class FabricClient {
 
   private FabricOrg fabricOrg;
 
-  public FabricClient() throws Exception{
+
+  public ZblClient() throws IOException, CertificateException, InvalidKeyException, NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
     config.initOrgs();
   }
   public HFClient getHfClient() throws CryptoException, InvalidArgumentException{
@@ -147,5 +157,6 @@ public class FabricClient {
       return null;
     }).get(config.getTransactionWaitTime(), TimeUnit.SECONDS);
   }
+
 
 }

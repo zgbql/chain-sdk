@@ -129,7 +129,7 @@ public class FabricConfig {
         return config;
     }
 
-    private String getProperty(String property) {
+    public String getProperty(String property) {
         String ret = sdkProperties.getProperty(property);
         if (null == ret) {
             logger.warn(String.format("No configuration value found for '%s'", property));
