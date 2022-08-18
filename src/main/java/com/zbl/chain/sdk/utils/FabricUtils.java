@@ -18,7 +18,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hyperledger.fabric.sdk.Channel.PeerOptions.createPeerOptions;
 
 public class FabricUtils {
-
     /**
      * 获取客户端实例
      */
@@ -97,7 +96,12 @@ public class FabricUtils {
 
         for (String peerName : org.getPeerNames()) {
             String peerLocation = org.getPeerLocation(peerName);
-            Peer peer = client.newPeer(peerName, peerLocation, config.getPeerProperties(peerName));
+            Properties peerProperties = config.getPeerProperties(peerName); //test properties for peer.. if any.
+            if (peerProperties == null) {
+                peerProperties = new Properties();
+            }
+            peerProperties.put("grpc.NettyChannelBuilderOption.maxInboundMessageSize", 9000000);
+            Peer peer = client.newPeer(peerName, peerLocation, peerProperties);
             peers.add(peer);
         }
         return peers;
